@@ -1,11 +1,11 @@
 from app import  app
-from models import Power, Hero, HeroPower, db
+from models import Powers, Hero, HeroPowers, db
 import random
 
 with app.app_context():
     Hero.query.delete()
-    Power.query.delete()
-    HeroPower.query.delete()
+    Powers.query.delete()
+    HeroPowers.query.delete()
 
     print("🦸‍♀️ Seeding powers...")
 
@@ -17,7 +17,7 @@ with app.app_context():
     ]
 
     for data in powers_data:
-        power = Power(**data)
+        power = Powers(**data)
         db.session.add(power)
 
     db.session.commit()
@@ -48,17 +48,17 @@ with app.app_context():
     strengths = ["Strong", "Weak", "Average"]
 
     heroes = Hero.query.all()
-    powers = Power.query.all()
+    powers = Powers.query.all()
 
     for hero in heroes:
         for _ in range(random.randint(1, 3)):
             power = random.choice(powers)
             strength = random.choice(strengths)
 
-            hero_power = HeroPower(hero_id=hero.id, power_id=power.id, strength=strength)
+            hero_power = HeroPowers(hero_id=hero.id, power_id=power.id, strength=strength)
             db.session.add(hero_power)
             print(hero_power)
 
     db.session.commit()
-    
+
     print("🦸‍♀️ Done seeding!")
